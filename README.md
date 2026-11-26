@@ -69,3 +69,5 @@ images/         poster, key art and fighter photos
 ---
 
 *A parody fan game made for fun at Robo Fest 5.0. It isn't affiliated with NVIDIA or with any of the people it features.*
+
+Upcoming Features are intended to be commited soon. 
