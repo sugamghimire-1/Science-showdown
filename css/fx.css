@@ -1,0 +1,80 @@
+/* =====================================================================
+   Science Showdown — FX layer styles (v14): transitions & motion
+   ===================================================================== */
+
+/* every screen glides in when it appears */
+#menuScreen,#selectScreen,#stageScreen,#vsScreen,#fightScreen{animation:screenIn .45s cubic-bezier(.2,.8,.2,1) both}
+@keyframes screenIn{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:none}}
+
+/* ---- main menu poster: light sweep + breathing glow + pulsing main button ---- */
+.poster-stage{position:relative;overflow:hidden}
+.poster-stage::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:2;
+  background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.16) 48%,rgba(255,230,160,.1) 52%,transparent 65%);
+  transform:translateX(-120%);animation:posterSweep 5.5s ease-in-out 1s infinite}
+@keyframes posterSweep{0%,55%{transform:translateX(-120%)}85%,100%{transform:translateX(120%)}}
+.poster-img{animation:posterBreathe 9s ease-in-out infinite alternate;transform-origin:50% 40%}
+@keyframes posterBreathe{from{transform:scale(1);filter:saturate(1)}to{transform:scale(1.035);filter:saturate(1.15) contrast(1.04)}}
+.poster-btn.hot{animation:hotPulse 1.6s ease-in-out infinite}
+@keyframes hotPulse{0%,100%{text-shadow:0 0 10px rgba(255,140,0,.8)}50%{text-shadow:0 0 22px rgba(255,200,60,1),0 0 40px rgba(255,90,0,.7)}}
+
+/* ---- character select: 3D tilt (set in fx.js) + selected glow pulse ---- */
+#selectScreen .card{transition:transform .12s ease-out,box-shadow .2s,border-color .2s;will-change:transform;animation-fill-mode:backwards}
+#selectScreen .card.sel1,#selectScreen .card.sel2{animation:selPulse 1.3s ease-in-out infinite alternate}
+@keyframes selPulse{from{filter:brightness(1)}to{filter:brightness(1.18)}}
+.pick-box .avatar img{animation:avatarIn .35s cubic-bezier(.2,1.6,.4,1)}
+@keyframes avatarIn{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+
+/* ---- VS screen: banners slam in from the sides, VS logo drops in ---- */
+#vsScreen .vs-banner.p1{animation:fromLeft .5s cubic-bezier(.2,1.2,.3,1) .05s both}
+#vsScreen .vs-banner.p2{animation:fromRight .5s cubic-bezier(.2,1.2,.3,1) .05s both}
+#vsScreen .vs-banner.assist.p1{animation-delay:.25s}
+#vsScreen .vs-banner.assist.p2{animation-delay:.25s}
+#vsScreen .vs-big-name.left{animation:fromLeft .55s cubic-bezier(.2,1.2,.3,1) .35s both}
+#vsScreen .vs-big-name.right{animation:fromRight .55s cubic-bezier(.2,1.2,.3,1) .35s both}
+#vsScreen .vs-logo{animation:vsSlam .5s cubic-bezier(.3,1.8,.5,1) .15s both}
+#vsScreen .vs-title-row{animation:screenIn .5s ease both}
+@keyframes fromLeft{from{opacity:0;transform:translateX(-120px) skewX(-12deg)}to{opacity:1;transform:none}}
+@keyframes fromRight{from{opacity:0;transform:translateX(120px) skewX(12deg)}to{opacity:1;transform:none}}
+@keyframes vsSlam{0%{opacity:0;transform:scale(3) rotate(-10deg)}60%{opacity:1;transform:scale(.92) rotate(2deg)}100%{transform:none}}
+
+/* ---- fight HUD: bars shake when you get hit ---- */
+.hpwrap.hitshake{animation:hpShake .32s linear}
+@keyframes hpShake{0%,100%{translate:0 0}20%{translate:-5px 1px}40%{translate:4px -1px}60%{translate:-3px 0}80%{translate:2px 1px}}
+.hpwrap.hitshake .hpbar{filter:brightness(1.6)}
+.timer .num.low{animation:timerTick 1s steps(1) infinite}
+@keyframes timerTick{0%{transform:scale(1.12)}50%{transform:scale(1)}}
+.stage-wrap{position:relative}
+
+/* ---- end-of-match modal pops ---- */
+.modal.show .modal-card{animation:modalPop .4s cubic-bezier(.2,1.6,.4,1) both}
+@keyframes modalPop{from{opacity:0;transform:scale(.7) translateY(20px)}to{opacity:1;transform:none}}
+
+@media (prefers-reduced-motion: reduce){
+  #menuScreen,#selectScreen,#stageScreen,#vsScreen,#fightScreen,
+  .poster-stage::after,.poster-img,.poster-btn.hot,#selectScreen .card.sel1,#selectScreen .card.sel2,
+  #vsScreen *,.hpwrap.hitshake,.timer .num.low,.modal.show .modal-card,.pick-box .avatar img{animation:none!important}
+}
+
+/* ---- select grid fixes: readable active filter chip, uncluttered portraits ---- */
+#selectScreen .chip.on{background:var(--gold);color:#111;border-color:var(--gold)}
+#selectScreen .card .photo-badge{display:none}
+#selectScreen .card .pnum{font-size:9.5px;padding:1px 5px;top:4px;left:4px}
+
+/* ===== v15: ONLINE 1v1 ===== */
+.poster-btn.online{color:#7df9ff;text-shadow:0 0 12px rgba(0,229,255,.8),0 2px 0 rgba(0,0,0,.85)}
+.online-card{max-width:640px}
+.online-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:14px 0 6px;text-align:left}
+.online-pane{background:rgba(5,8,20,.55);border:1px solid var(--line);border-radius:14px;padding:14px}
+.online-pane h3{margin:0 0 4px;font-size:16px}
+.online-pane p{margin:0 0 10px;font-size:13px}
+.online-pane .btn{width:100%}
+.online-pane input{width:100%;margin-bottom:8px;background:#060d24;border:1.5px solid #33509e;color:#fff;border-radius:12px;padding:10px 12px;font:900 26px/1 system-ui;letter-spacing:.35em;text-align:center;text-transform:uppercase;min-height:48px}
+.online-pane input:focus{outline:2px solid var(--gold);outline-offset:1px}
+.online-hostbox{margin-top:10px;text-align:center}
+.online-code{font:900 44px/1.1 system-ui;letter-spacing:.3em;color:var(--gold);text-shadow:0 0 18px rgba(255,198,26,.55);margin-bottom:8px;padding-left:.3em}
+.online-status{min-height:22px;font-weight:800;color:#bfe3ff;margin:8px 0 0}
+.online-status.bad{color:#ff8a94}
+.online-help{font-size:12.5px}
+.net-badge{position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:40;display:none;align-items:center;gap:10px;background:rgba(4,8,22,.92);border:1px solid #2f7bff;border-radius:999px;padding:6px 6px 6px 14px;font-size:12.5px;font-weight:800;color:#cfe4ff;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+.net-badge.show{display:flex}
+.net-badge button{min-height:30px;border:0;border-radius:999px;background:#ff3b4e;color:#fff;font-weight:900;padding:4px 12px}
